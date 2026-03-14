@@ -649,11 +649,11 @@ public class GamePanel extends JPanel {
     java.awt.Graphics2D g2d = (java.awt.Graphics2D) g;
     int px = player.getCol() * TILE_SIZE + (TILE_SIZE / 2);
     int py = player.getRow() * TILE_SIZE + (TILE_SIZE / 2);
-    int radius = TILE_SIZE * 5; // 5 blocks radius visibility
+    int radius = TILE_SIZE * 4; //  radius
 
-    float[] dist = { 0.0f, 0.8f, 1.0f };
-    // Make the outer ring only 180 opacity (about 70%) instead of completely black
-    Color[] colors = { new Color(0, 0, 0, 0), new Color(0, 0, 0, 100), new Color(0, 0, 0, 180) };
+    float[] dist = { 0.0f, 0.9f, 1.0f };
+    //  opacity for a lighter, brighter background
+    Color[] colors = { new Color(0, 0, 0, 0), new Color(0, 0, 0, 60), new Color(0, 0, 0, 130) };
     java.awt.RadialGradientPaint p = new java.awt.RadialGradientPaint(
         new java.awt.geom.Point2D.Float(px, py), radius, dist, colors);
 
