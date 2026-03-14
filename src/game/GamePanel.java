@@ -104,6 +104,32 @@ public class GamePanel extends JPanel {
       blocks[0][c].dig(0);
     }
 
+    // Generate random winding dirt tunnels (horizontal emphasis)
+    int numTunnels = 6;
+    for (int t = 0; t < numTunnels; t++) {
+      int startRow = 3 + (int) (Math.random() * (ROWS - 6)); // Avoid very top and very bottom
+      int currentRow = startRow;
+
+      // Carve a tunnel across the map horizontally
+      for (int c = 0; c < COLS; c++) {
+        // 20% chance to shift up or down a row
+        if (Math.random() < 0.20) {
+          currentRow += (Math.random() > 0.5) ? 1 : -1;
+        }
+
+        // Clamp row inside the map bounds (leave bottom row untouched)
+        currentRow = Math.max(1, Math.min(currentRow, ROWS - 2));
+
+        // Clear the block if it's not indestructible
+        if (blocks[currentRow][c].getType() != Block.Type.WHITESTONE
+            && blocks[currentRow][c].getType() != Block.Type.TREASURE_BOX) {
+          blocks[currentRow][c].setType(Block.Type.STONE);
+          blocks[currentRow][c].setContent(Block.Type.STONE);
+          blocks[currentRow][c].dig(0);
+        }
+      }
+    }
+
     player = new Player(0, 0, TILE_SIZE); // Start at top-left
     scoreManager = new ScoreManager(playerName);
     isGameOver = false;
@@ -649,10 +675,10 @@ public class GamePanel extends JPanel {
     java.awt.Graphics2D g2d = (java.awt.Graphics2D) g;
     int px = player.getCol() * TILE_SIZE + (TILE_SIZE / 2);
     int py = player.getRow() * TILE_SIZE + (TILE_SIZE / 2);
-    int radius = TILE_SIZE * 4; //  radius
+    int radius = TILE_SIZE * 4; // radius
 
     float[] dist = { 0.0f, 0.9f, 1.0f };
-    //  opacity for a lighter, brighter background
+    // opacity for a lighter, brighter background
     Color[] colors = { new Color(0, 0, 0, 0), new Color(0, 0, 0, 60), new Color(0, 0, 0, 130) };
     java.awt.RadialGradientPaint p = new java.awt.RadialGradientPaint(
         new java.awt.geom.Point2D.Float(px, py), radius, dist, colors);
