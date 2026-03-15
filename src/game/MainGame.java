@@ -10,7 +10,27 @@ public class MainGame extends JFrame {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setResizable(false);
 
-    //  Main Menu Panel
+    // Set Window & Dock Icon (macOS support)
+    try {
+      java.net.URL iconUrl = getClass().getResource("/game/res/miner.png");
+      if (iconUrl != null) {
+        java.awt.Image iconImg = new javax.swing.ImageIcon(iconUrl).getImage();
+        // Standard window icon
+        this.setIconImage(iconImg);
+
+        // macOS Dock Icon
+        if (java.awt.Taskbar.isTaskbarSupported()) {
+          java.awt.Taskbar taskbar = java.awt.Taskbar.getTaskbar();
+          if (taskbar.isSupported(java.awt.Taskbar.Feature.ICON_IMAGE)) {
+            taskbar.setIconImage(iconImg);
+          }
+        }
+      }
+    } catch (Exception e) {
+      System.err.println("Could not set window icon: " + e.getMessage());
+    }
+
+    // Main Menu Panel
     javax.swing.JPanel startPanel = new javax.swing.JPanel();
     startPanel.setPreferredSize(new java.awt.Dimension(800, 600)); // Match typical GamePanel size
     startPanel.setBackground(new java.awt.Color(35, 30, 40)); // Dark grey/purple underground look
@@ -22,7 +42,8 @@ public class MainGame extends JFrame {
 
     // Logo (Miner Image)
     try {
-      java.awt.image.BufferedImage rawImg = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/miner.png"));
+      java.awt.image.BufferedImage rawImg = javax.imageio.ImageIO
+          .read(getClass().getResourceAsStream("/game/res/miner.png"));
       // Scale it up nicely for a logo
       java.awt.Image scaledImg = rawImg.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
       javax.swing.JLabel logoLabel = new javax.swing.JLabel(new javax.swing.ImageIcon(scaledImg));

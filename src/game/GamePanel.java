@@ -184,6 +184,9 @@ public class GamePanel extends JPanel {
       // Revert position manually to avoid triggering the move() method which would
       // flip the lastFacingDirection
       player.revertPosition(dx, dy);
+    } else {
+      // Play walking sound if move was successful
+      playSound("/game/res/freesound_community-running-on-dirt-87203.mp3");
     }
 
     repaint();
@@ -243,7 +246,7 @@ public class GamePanel extends JPanel {
     player.setDigging(true);
     repaint();
 
-    playSound("/dig.wav");
+    playSound("/game/res/dig.wav");
 
     // The block's true identity is hidden in 'contentType' until dug.
     // Reveal it first before checking what we hit.
@@ -252,7 +255,7 @@ public class GamePanel extends JPanel {
 
     if (hitType == Block.Type.BOMB) {
       System.out.println("BOOM! Bomb hit!");
-      playSound("/bomb.wav");
+      playSound("/game/res/bomb.wav");
 
       boolean hasLivesLeft = scoreManager.loseLife();
       paintImmediately(0, 0, getWidth(), getHeight()); // Force synchronous UI update for heart loss
@@ -373,7 +376,7 @@ public class GamePanel extends JPanel {
     } else if (type == Block.Type.TREASURE_BOX) {
       scoreManager.addPoints(500); // Massive bonus for the single treasure
       System.out.println("Found Treasure Box! +500");
-      playSound("/dig.wav"); // Maybe a special sound here later?
+      playSound("/game/res/dig.wav"); // Maybe a special sound here later?
       showNiceTreasurePopup();
     } else if (type == Block.Type.LADDER) {
       // Ladders are just structural, no points awarded
@@ -393,7 +396,7 @@ public class GamePanel extends JPanel {
         BorderFactory.createEmptyBorder(20, 40, 20, 40)));
 
     try {
-      java.net.URL url = Block.class.getResource("/heart.png");
+      java.net.URL url = Block.class.getResource("/game/res/heart.png");
       if (url != null) {
         ImageIcon heartIcon = new ImageIcon(
             new ImageIcon(url).getImage().getScaledInstance(80, 80, java.awt.Image.SCALE_SMOOTH));
@@ -450,7 +453,7 @@ public class GamePanel extends JPanel {
         BorderFactory.createEmptyBorder(20, 40, 20, 40)));
 
     try {
-      java.net.URL url = Block.class.getResource("/bomb.png");
+      java.net.URL url = Block.class.getResource("/game/res/bomb.png");
       if (url != null) {
         ImageIcon bombIcon = new ImageIcon(
             new ImageIcon(url).getImage().getScaledInstance(80, 80, java.awt.Image.SCALE_SMOOTH));
@@ -507,7 +510,7 @@ public class GamePanel extends JPanel {
         BorderFactory.createEmptyBorder(20, 40, 20, 40)));
 
     try {
-      java.net.URL url = Block.class.getResource("/tresure_box_img.png");
+      java.net.URL url = Block.class.getResource("/game/res/tresure_box_img.png");
       if (url != null) {
         ImageIcon treasureIcon = new ImageIcon(
             new ImageIcon(url).getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH));
@@ -571,6 +574,10 @@ public class GamePanel extends JPanel {
   }
 
   private void playSound(String resource) {
+    if (resource.endsWith(".mp3")) {
+      playMp3Mac(resource);
+      return;
+    }
     try {
       java.net.URL url = getClass().getResource(resource);
       if (url != null) {
@@ -584,6 +591,34 @@ public class GamePanel extends JPanel {
     } catch (Exception e) {
       System.err.println("Error playing sound " + resource + ": " + e.getMessage());
     }
+  }
+
+  /**
+   * Helper to play MP3 on Mac using the built-in afplay command.
+   * This is a workaround since standard Java Sound doesn't support MP3.
+   */
+  private void playMp3Mac(String resource) {
+    new Thread(() -> {
+      try {
+        java.net.URL url = getClass().getResource(resource);
+        if (url != null) {
+          // Extract to a temp file because afplay needs a file path
+          java.io.File tempFile = java.io.File.createTempFile("sound", ".mp3");
+          tempFile.deleteOnExit();
+          try (java.io.InputStream in = url.openStream();
+              java.io.FileOutputStream out = new java.io.FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+              out.write(buffer, 0, bytesRead);
+            }
+          }
+          new ProcessBuilder("afplay", "-t", "0.5", tempFile.getAbsolutePath()).start();
+        }
+      } catch (Exception e) {
+        System.err.println("Error playing MP3 via afplay: " + e.getMessage());
+      }
+    }).start();
   }
 
   @Override

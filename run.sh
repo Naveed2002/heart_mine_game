@@ -10,8 +10,8 @@ javac -d bin -sourcepath src src/game/*.java
 
 # Copy resources
 echo "Copying resources..."
-cp res/*.png bin/ 2>/dev/null || :
-cp res/*.wav bin/ 2>/dev/null || :
+mkdir -p bin/game/res
+cp src/game/res/* bin/game/res/ 2>/dev/null || :
 
 # Check if compilation succeeded
 if [ $? -eq 0 ]; then

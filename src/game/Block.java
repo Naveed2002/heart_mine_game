@@ -23,16 +23,16 @@ public class Block {
 
   static {
     try {
-      stoneImg = loadImage("/stone.png");
-      whiteStoneImg = loadImage("/whitestone.png");
-      dirtImg = loadImage("/dirt.png");
-      copperImg = loadImage("/copper.png");
-      goldImg = loadImage("/gold.png");
-      gemImg = loadImage("/gem.png");
-      bombImg = loadImage("/bomb.png");
-      grassImg = loadImage("/grass.png");
-      treasureBoxImg = loadImage("/tresure_box_img.png");
-      ladderImg = loadImage("/ladder.png");
+      stoneImg = loadImage("/game/res/stone.png");
+      whiteStoneImg = loadImage("/game/res/whitestone.png");
+      dirtImg = loadImage("/game/res/dirt.png");
+      copperImg = loadImage("/game/res/copper.png");
+      goldImg = loadImage("/game/res/gold.png");
+      gemImg = loadImage("/game/res/gem.png");
+      bombImg = loadImage("/game/res/bomb.png");
+      grassImg = loadImage("/game/res/grass.png");
+      treasureBoxImg = loadImage("/game/res/tresure_box_img.png");
+      ladderImg = loadImage("/game/res/ladder.png");
     } catch (Exception e) {
       System.err.println("Error loading block textures: " + e.getMessage());
     }

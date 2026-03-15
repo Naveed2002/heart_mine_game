@@ -31,8 +31,8 @@ public class Player {
 
     try {
       // Load miner images
-      minerImage = ImageIO.read(getClass().getResourceAsStream("/miner.png"));
-      minerDigImage = ImageIO.read(getClass().getResourceAsStream("/miner_dig.png"));
+      minerImage = ImageIO.read(getClass().getResourceAsStream("/game/res/miner.png"));
+      minerDigImage = ImageIO.read(getClass().getResourceAsStream("/game/res/miner_dig.png"));
     } catch (Exception e) {
       System.err.println("Could not load miner images: " + e.getMessage());
     }

@@ -18,7 +18,7 @@ public class ScoreManager {
     this.lives = 3; // Start with 3 lives
 
     try {
-      heartImg = ImageIO.read(getClass().getResourceAsStream("/heart.png"));
+      heartImg = ImageIO.read(getClass().getResourceAsStream("/game/res/heart.png"));
     } catch (Exception e) {
       System.err.println("Could not load heart.png");
     }
