@@ -70,8 +70,8 @@ public class GamePanel extends JPanel {
           } else if (innerRand < 0.35) {
             blocks[r][c].setContent(Block.Type.COPPER);
           } else {
-            // Stone, but maybe a hidden bomb?
-            if (Math.random() < 0.1) { // 10% chance if stone
+            // bomb logic percentage
+            if (Math.random() < 0.3) { 
               blocks[r][c].setContent(Block.Type.BOMB);
             } else {
               blocks[r][c].setContent(Block.Type.STONE);

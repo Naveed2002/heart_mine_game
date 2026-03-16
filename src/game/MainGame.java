@@ -18,7 +18,7 @@ public class MainGame extends JFrame {
         // Standard window icon
         this.setIconImage(iconImg);
 
-        // macOS Dock Icon
+        // Icon
         if (java.awt.Taskbar.isTaskbarSupported()) {
           java.awt.Taskbar taskbar = java.awt.Taskbar.getTaskbar();
           if (taskbar.isSupported(java.awt.Taskbar.Feature.ICON_IMAGE)) {
@@ -68,7 +68,11 @@ public class MainGame extends JFrame {
     startPanel.add(subTitle, gbc);
 
     // Input Field
+    String savedName = ConfigManager.loadPlayerName();
     javax.swing.JTextField nameField = new javax.swing.JTextField(15);
+    if (!savedName.isEmpty()) {
+      nameField.setText(savedName);
+    }
     nameField.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 22));
     nameField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
     nameField.setBackground(new java.awt.Color(50, 45, 60));
@@ -78,7 +82,7 @@ public class MainGame extends JFrame {
     gbc.gridy = 3;
     startPanel.add(nameField, gbc);
 
-    // Start Button
+    // Start Button--------------
     javax.swing.JButton startBtn = new javax.swing.JButton("START DIGGING");
     startBtn.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
     startBtn.setForeground(java.awt.Color.WHITE);
@@ -90,10 +94,15 @@ public class MainGame extends JFrame {
     gbc.insets = new java.awt.Insets(30, 10, 10, 10);
     startPanel.add(startBtn, gbc);
 
+    //
+  
     startBtn.addActionListener(e -> {
       String playerName = nameField.getText().trim();
       if (playerName.isEmpty()) {
         playerName = "Miner";
+      } else {
+        // Save the valid name to JSON
+        ConfigManager.savePlayerName(playerName);
       }
 
       // Transition to game

@@ -15,7 +15,7 @@ public class ScoreManager {
   public ScoreManager(String playerName) {
     this.playerName = playerName;
     this.score = 0;
-    this.lives = 3; // Start with 3 lives
+    this.lives = 3; // Start 3 lives for a player
 
     try {
       heartImg = ImageIO.read(getClass().getResourceAsStream("/game/res/heart.png"));

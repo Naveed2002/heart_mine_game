@@ -17,6 +17,9 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+        
+        
+        //x, y//
 
         if (code == KeyEvent.VK_UP) {
             gamePanel.movePlayer(0, -1);
